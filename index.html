@@ -3,23 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>No Black Boxes: Interpretable and Interactable Predictive Healthcare with Knowledge-Enhanced Agentic Causal Discovery</title>
+  <title>No Black Boxes: Knowledge-Enhanced Causal Agentic for Healthcare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #5a8a3c;
-      --primary-dark: #3f6828;
-      --accent: #a8c23a;
-      --bg: #f5f9ee;
-      --card: #ffffff;
-      --text: #2a3320;
-      --muted: #6b7d55;
-      --border: #d6e8be;
+      --bg: #07070e;
+      --bg2: #0c0b1a;
+      --bg3: #111028;
+      --card: rgba(30,27,75,0.4);
+      --card-hover: rgba(30,27,75,0.65);
+      --border: rgba(139,92,246,0.12);
+      --border-light: rgba(139,92,246,0.22);
+      --primary: #8b5cf6;
+      --primary-glow: rgba(139,92,246,0.15);
+      --accent: #fbbf24;
+      --accent2: #a78bfa;
+      --text: #ffffff;
+      --text-muted: #8494a7;
+      --text-dim: #4a5068;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'DM Sans', system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.65;
@@ -28,201 +37,286 @@
     /* ── NAV ── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(8px);
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       padding: 0 2rem;
       display: flex; align-items: center; justify-content: space-between;
-      height: 56px;
+      height: 58px;
+      opacity: 0;
+      transform: translateY(-100%);
+      animation: slideDown 0.7s cubic-bezier(.16,1,.3,1) 0s forwards;
     }
-    .nav-logo { font-weight: 700; font-size: 1.1rem; color: var(--primary); letter-spacing: -.3px; }
-    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--muted); font-size: .9rem; transition: color .2s; }
-    .nav-links a:hover { color: var(--primary); }
+    @keyframes slideDown {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .nav-logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700; font-size: 1.1rem;
+      background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 30%, #818cf8 55%, #60a5fa 80%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -.3px;
+    }
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-muted);
+      font-size: .85rem; font-weight: 500;
+      transition: color .2s;
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width .25s cubic-bezier(.22,.68,0,1.2);
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-btn {
+      background: var(--primary); color: #0a0a0f;
+      padding: .4rem 1rem; border-radius: 6px;
+      font-size: .82rem; font-weight: 700;
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    .nav-btn:hover { opacity: .85; }
 
     /* ── HERO ── */
     .hero {
-      background: linear-gradient(135deg, #3d6b28 0%, #6aaa3e 50%, #c8dc5a 100%);
-      color: #fff;
-      text-align: center;
-      padding: 90px 2rem 80px;
       position: relative;
+      text-align: center;
+      padding: 100px 2rem 90px;
+      overflow: hidden;
     }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139,92,246,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-logos {
+      position: absolute; top: 1.2rem;
+      display: flex; align-items: center;
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .hero-logos.left { left: 1.8rem; }
+    .hero-logos.right { right: 1.8rem; }
     .hero-badge {
-      display: inline-block;
-      background: rgba(255,255,255,.2);
-      border: 1px solid rgba(255,255,255,.4);
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(139,92,246,.08);
+      border: 1px solid rgba(139,92,246,.25);
       border-radius: 20px;
       padding: 4px 14px;
-      font-size: .8rem;
+      font-size: .75rem; font-weight: 600;
+      color: var(--primary);
       letter-spacing: .5px;
       text-transform: uppercase;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.6rem;
     }
     .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
       font-weight: 800;
-      line-height: 1.15;
-      max-width: 820px;
-      margin: 0 auto .8rem;
+      line-height: 1.1;
+      max-width: 1100px;
+      margin: 0 auto .9rem;
+      letter-spacing: -.03em;
+      white-space: nowrap;
     }
-    .hero h1 span { color: #e8f5a0; }
+    @media (max-width: 900px) {
+      .hero h1 { white-space: normal; font-size: clamp(2rem, 5vw, 3rem); }
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 30%, #818cf8 55%, #60a5fa 80%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .hero p {
-      font-size: 1.1rem;
-      max-width: 620px;
-      margin: 0 auto 2rem;
-      opacity: .9;
+      font-size: 1.05rem;
+      max-width: 780px;
+      margin: 0 auto 2.2rem;
+      color: var(--text-muted);
+      line-height: 1.7;
     }
+    .hero p b { color: var(--primary); font-weight: 600; }
     .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
     .btn {
-      display: inline-flex; align-items: center; gap: .4rem;
-      padding: .7rem 1.6rem;
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .65rem 1.5rem;
       border-radius: 8px;
-      font-size: .95rem; font-weight: 600;
+      font-size: .9rem; font-weight: 600;
       text-decoration: none;
-      transition: transform .15s, box-shadow .15s;
-      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.2); }
-    .btn-white { background: #fff; color: var(--primary); }
-    .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.7); }
-
-    .hero-meta {
-      margin-top: 2.5rem;
-      font-size: .85rem;
-      opacity: .75;
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--primary); color: #0a0a0f;
+      box-shadow: 0 0 20px rgba(139,92,246,.25);
     }
+    .btn-primary:hover { box-shadow: 0 0 30px rgba(139,92,246,.4); }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border-light);
+    }
+    .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
 
-    /* ── SECTION WRAPPER ── */
-    section { padding: 70px 2rem; }
+    /* ── SECTION ── */
+    section { padding: 80px 2rem; }
     .container { max-width: 1080px; margin: 0 auto; }
     .section-label {
-      font-size: .75rem; font-weight: 700; letter-spacing: 1.5px;
+      font-size: .7rem; font-weight: 700; letter-spacing: 2px;
       text-transform: uppercase; color: var(--primary);
-      margin-bottom: .5rem;
+      margin-bottom: .6rem;
     }
     .section-title {
+      font-family: 'Outfit', sans-serif;
       font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 800; margin-bottom: .6rem;
+      font-weight: 700; margin-bottom: .6rem;
+      letter-spacing: -.02em;
     }
-    .section-sub { color: var(--muted); max-width: 600px; margin-bottom: 2.5rem; }
+    .section-sub { color: var(--text-muted); max-width: 580px; margin-bottom: 2.5rem; font-size: .95rem; }
 
-    /* ── PROBLEM / SOLUTION ── */
-    .compare {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
-    }
+    /* ── DIVIDER ── */
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* ── COMPARE ── */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
     @media (max-width: 640px) { .compare { grid-template-columns: 1fr; } }
     .compare-card {
-      border-radius: 12px; padding: 1.6rem;
+      border-radius: 14px; padding: 1.6rem;
       border: 1px solid var(--border);
+      background: var(--card);
     }
-    .compare-card.bad { background: #e8e8e8; border-color: #d0d0d0; }
-    .compare-card.good { background: #faf7dc; border-color: #e8d97a; }
-    .compare-card h3 { font-size: 1rem; margin-bottom: .8rem; display: flex; align-items: center; gap: .5rem; }
+    .compare-card.bad { border-color: rgba(248,113,113,.2); background: rgba(248,113,113,.04); }
+    .compare-card.good { border-color: rgba(139,92,246,.2); background: rgba(139,92,246,.04); }
+    .compare-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: .95rem; font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .compare-card.bad h3 { color: #f87171; }
+    .compare-card.good h3 { color: var(--primary); }
     .compare-card ul { list-style: none; }
-    .compare-card ul li { padding: .3rem 0; font-size: .93rem; display: flex; align-items: flex-start; gap: .5rem; }
-    .tag-bad { color: #c0392b; font-size: 1rem; }
-    .tag-good { color: #27ae60; font-size: 1rem; }
-    .compare-img {
-      width: 100%; margin-top: 1.2rem;
-    }
+    .compare-card ul li { padding: .3rem 0; font-size: .88rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: .5rem; }
+    .tag-bad { color: #f87171; }
+    .tag-good { color: var(--primary); }
+    .compare-img { width: 100%; margin-top: 1.2rem; border-radius: 8px; }
 
     /* ── FIGURE ── */
-    .fig-block {
-      margin-top: 3rem; text-align: center;
-    }
-    .fig-block img {
-      max-width: 100%;
-    }
-    .fig-caption {
-      margin-top: .8rem; font-size: .83rem;
-      color: var(--muted); font-style: italic;
-    }
+    .fig-block { margin-top: 3rem; text-align: center; }
+    .fig-block img { max-width: 100%; border-radius: 10px; }
+    .fig-caption { margin-top: .8rem; font-size: .8rem; color: var(--text-dim); font-style: italic; }
 
-    /* ── HOW IT WORKS ── */
-    #how { background: #fff; }
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    /* ── STEPS ── */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
     .step {
-      background: var(--bg);
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.6rem;
-      position: relative;
+      transition: border-color .2s;
     }
+    .step:hover { border-color: var(--primary); }
     .step-num {
-      width: 36px; height: 36px;
-      background: var(--primary); color: #fff;
-      border-radius: 50%;
+      width: 32px; height: 32px;
+      background: var(--primary-glow);
+      border: 1px solid rgba(139,92,246,.3);
+      color: var(--primary);
+      border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: .9rem;
+      font-weight: 700; font-size: .85rem;
       margin-bottom: 1rem;
+      font-family: 'Outfit', sans-serif;
     }
-    .step h3 { font-size: 1rem; margin-bottom: .4rem; }
-    .step p { font-size: .88rem; color: var(--muted); }
+    .step h3 { font-size: .95rem; font-weight: 600; margin-bottom: .4rem; }
+    .step p { font-size: .85rem; color: var(--text-muted); }
 
     /* ── AGENTS ── */
-    .agents { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .agents { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
     .agent-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 1.8rem;
-      transition: box-shadow .2s;
+      transition: border-color .2s, background .2s;
     }
-    .agent-card:hover { box-shadow: 0 8px 30px rgba(26,115,232,.12); }
+    .agent-card:hover { border-color: var(--primary); background: var(--card-hover); }
     .agent-icon {
-      width: 48px; height: 48px; border-radius: 12px;
+      width: 44px; height: 44px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; margin-bottom: 1rem;
+      font-size: 1.3rem; margin-bottom: 1rem;
     }
-    .icon-blue { background: #e4f4cc; }
-    .icon-green { background: #f0facc; }
-    .icon-purple { background: #ddf0d0; }
-    .agent-card h3 { font-size: 1rem; margin-bottom: .5rem; }
-    .agent-card p { font-size: .88rem; color: var(--muted); }
+    .icon-blue { background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.2); }
+    .icon-green { background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.2); }
+    .icon-purple { background: rgba(244,114,182,.1); border: 1px solid rgba(244,114,182,.2); }
+    .agent-card h3 { font-size: .95rem; font-weight: 600; margin-bottom: .5rem; }
+    .agent-card p { font-size: .85rem; color: var(--text-muted); }
 
     /* ── RESULTS ── */
-    #results { background: #fff; }
     .dataset-tag {
       display: inline-block;
-      background: var(--primary); color: #fff;
+      background: var(--primary-glow);
+      color: var(--primary);
+      border: 1px solid rgba(139,92,246,.25);
       border-radius: 4px; padding: 2px 8px;
-      font-size: .72rem; font-weight: 600;
+      font-size: .7rem; font-weight: 600;
       margin-bottom: .6rem;
+      letter-spacing: .5px;
+      text-transform: uppercase;
     }
-    .dataset-tag.green { background: var(--accent); }
+    .dataset-tag.purple {
+      background: rgba(139,92,246,.1);
+      color: var(--accent);
+      border-color: rgba(139,92,246,.25);
+    }
     .results-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
     @media (max-width: 700px) { .results-tables { grid-template-columns: 1fr; } }
-    .results-table-block { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-    .results-table-block .tbl-header {
-      background: var(--primary); color: #fff;
-      padding: .7rem 1rem; font-size: .85rem; font-weight: 700;
+    .results-table-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
     }
-    .results-table-block .tbl-header.green { background: var(--accent); }
-    table.rtable { width: 100%; border-collapse: collapse; font-size: .85rem; }
-    table.rtable th { padding: .5rem .8rem; text-align: left; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); }
-    table.rtable td { padding: .5rem .8rem; border-bottom: 1px solid var(--border); }
+    .tbl-header {
+      padding: .75rem 1rem; font-size: .82rem; font-weight: 700;
+      letter-spacing: .5px; text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      color: var(--primary);
+      background: var(--primary-glow);
+    }
+    .tbl-header.purple { color: var(--accent); background: rgba(139,92,246,.08); }
+    table.rtable { width: 100%; border-collapse: collapse; font-size: .84rem; }
+    table.rtable th { padding: .5rem .9rem; text-align: left; color: var(--text-dim); font-weight: 600; border-bottom: 1px solid var(--border); font-size: .78rem; letter-spacing: .5px; text-transform: uppercase; }
+    table.rtable td { padding: .5rem .9rem; border-bottom: 1px solid var(--border); color: var(--text-muted); }
     table.rtable tr:last-child td { border-bottom: none; }
-    table.rtable tr.ours td { font-weight: 700; color: var(--primary); background: #eaf5d8; }
-    table.rtable tr.second-best td { color: #555; }
+    table.rtable tr.ours td { font-weight: 700; color: var(--primary); background: var(--primary-glow); }
+    table.rtable tr.second-best td { color: var(--text); }
 
-    /* ── KEY FEATURES ── */
+    /* ── FEATURES ── */
     .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
     .feature {
       display: flex; gap: 1rem; align-items: flex-start;
       background: var(--card); border: 1px solid var(--border);
       border-radius: 12px; padding: 1.4rem;
+      transition: border-color .2s;
     }
-    .feature-icon { font-size: 1.5rem; flex-shrink: 0; }
-    .feature h4 { font-size: .95rem; margin-bottom: .3rem; }
-    .feature p { font-size: .85rem; color: var(--muted); }
+    .feature:hover { border-color: var(--border-light); }
+    .feature-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .feature h4 { font-size: .9rem; font-weight: 600; margin-bottom: .3rem; }
+    .feature p { font-size: .83rem; color: var(--text-muted); }
 
     /* ── AUTHORS ── */
-    #authors { background: var(--bg); }
     .authors-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1.4rem;
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: 1.2rem;
     }
     .author-card {
       background: var(--card);
@@ -232,50 +326,429 @@
       text-align: center;
       text-decoration: none;
       color: var(--text);
-      transition: box-shadow .2s, transform .15s;
+      transition: border-color .2s, transform .15s;
     }
-    .author-card:hover { box-shadow: 0 6px 20px rgba(90,138,60,.15); transform: translateY(-3px); }
+    .author-card:hover { border-color: var(--primary); transform: translateY(-3px); }
     .author-photo {
-      width: 80px; height: 80px;
+      width: 76px; height: 76px;
       border-radius: 50%;
       object-fit: cover;
       margin: 0 auto .8rem;
       display: block;
-      border: 3px solid var(--border);
+      border: 2px solid var(--border-light);
     }
     .author-initial {
-      width: 80px; height: 80px;
+      width: 76px; height: 76px;
       border-radius: 50%;
-      background: var(--primary);
-      color: #fff;
-      font-size: 1.6rem; font-weight: 700;
+      background: var(--primary-glow);
+      border: 2px solid rgba(139,92,246,.3);
+      color: var(--primary);
+      font-size: 1.5rem; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto .8rem;
-      border: 3px solid var(--border);
     }
-    .author-card h4 { font-size: .92rem; font-weight: 700; margin-bottom: .4rem; }
-    .author-card p { font-size: .78rem; color: var(--muted); line-height: 1.4; }
-    .affiliation {
-      margin-top: 1rem;
-      font-size: .88rem; color: var(--muted);
-    }
+    .author-card h4 { font-size: .88rem; font-weight: 700; margin-bottom: .35rem; }
+    .author-card p { font-size: .75rem; color: var(--text-muted); line-height: 1.45; }
+    .affiliation { margin-top: 1.2rem; font-size: .85rem; color: var(--text-dim); }
 
     /* ── CTA ── */
     .cta-section {
-      background: linear-gradient(135deg, #3d6b28, #c8dc5a);
-      color: #fff; text-align: center;
-      padding: 70px 2rem;
+      text-align: center;
+      padding: 80px 2rem;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
     }
-    .cta-section h2 { font-size: 1.8rem; margin-bottom: .8rem; }
-    .cta-section p { opacity: .9; margin-bottom: 2rem; }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(139,92,246,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem; font-weight: 700;
+      margin-bottom: .7rem; letter-spacing: -.02em;
+    }
+    .cta-section p { color: var(--text-muted); margin-bottom: 2rem; }
 
     /* ── FOOTER ── */
     footer {
       text-align: center;
       padding: 2rem;
-      font-size: .82rem;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
+      font-size: .8rem;
+      color: var(--text-dim);
+      background: var(--bg);
+    }
+
+    /* ── ANIMATIONS ── */
+
+    /* Hero entrance stagger */
+    .hero-badge,
+    .hero h1,
+    .hero p,
+    .hero-buttons {
+      opacity: 0;
+      transform: translateY(32px);
+      animation: heroFadeUp .55s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .hero-badge   { animation-delay: .3s; }
+    .hero h1      { animation-delay: .42s; }
+    .hero p       { animation-delay: .54s; }
+    .hero-buttons { animation-delay: .66s; }
+
+    @keyframes heroFadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating particles in hero */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0;
+      animation: particleFloat linear infinite;
+      pointer-events: none;
+    }
+    @keyframes particleFloat {
+      0%   { opacity: 0; transform: translateY(0) scale(0); }
+      10%  { opacity: .6; transform: translateY(-10px) scale(1); }
+      90%  { opacity: .3; }
+      100% { opacity: 0; transform: translateY(-120px) scale(0.5); }
+    }
+
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .45s cubic-bezier(.16,1,.3,1), transform .45s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Shine on primary button */
+    .btn-primary {
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      animation: shine 3s linear infinite;
+    }
+    @keyframes shine {
+      0%   { left: -100%; }
+      100% { left: 200%; }
+    }
+
+    /* Hover scale on cards */
+    .agent-card, .step, .feature, .author-card, .compare-card {
+      transition: border-color .2s, background .2s, transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s;
+    }
+    .agent-card:hover, .step:hover, .feature:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(139,92,246,.15);
+    }
+    .author-card:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 12px 40px rgba(139,92,246,.2);
+    }
+
+    /* ── PIPELINE DIAGRAM ── */
+    .pipeline-wrap { padding: 1rem 0; }
+    .pipeline-main {
+      display: flex;
+      gap: 1.8rem;
+      align-items: flex-start;
+    }
+    .pipeline-left {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+    }
+    .pipeline-row-wrap {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      margin-bottom: 3.2rem;
+    }
+    .pipeline-row-wrap:last-of-type { margin-bottom: 0; }
+    .pipeline-row-wrap .pipeline-row { flex: 1; margin-bottom: 0; }
+    .pipeline-row-label {
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .pipeline-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 0;
+    }
+    .pipeline-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 3.2rem;
+    }
+    .pipeline-row:last-of-type { margin-bottom: 0; }
+
+    .pnode {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem;
+      text-align: center;
+      width: 152px;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      transition: border-color .3s, background .3s, box-shadow .3s, transform .2s cubic-bezier(.16,1,.3,1), opacity .3s;
+    }
+    .pnode:hover { border-color: var(--border-light); transform: translateY(-2px); }
+    .pnode.active {
+      border-color: var(--primary) !important;
+      background: rgba(139,92,246,.08);
+      box-shadow: 0 0 24px rgba(139,92,246,.25), inset 0 0 18px rgba(139,92,246,.04);
+    }
+    .pnode.visited { border-color: rgba(139,92,246,.3); opacity: .7; }
+    .pnode.dim { opacity: .3; }
+
+    .pnode-badge {
+      position: absolute;
+      top: -11px; left: 50%; transform: translateX(-50%);
+      background: var(--primary); color: #0a0a0f;
+      font-size: .61rem; font-weight: 800;
+      padding: 2px 9px; border-radius: 10px;
+      letter-spacing: .4px; white-space: nowrap;
+    }
+    .pnode-icon { font-size: 1.4rem; margin-bottom: .3rem; line-height: 1; }
+    .pnode-label {
+      font-size: .79rem; font-weight: 700;
+      margin-bottom: .2rem;
+      font-family: 'Outfit', sans-serif;
+      color: var(--text);
+    }
+    .pnode-sub { font-size: .67rem; color: var(--text-muted); }
+
+    .agent-node { width: 170px; padding: 1.25rem 1rem 1rem; }
+
+    /* Pulse ring on active agent */
+    .pnode-pulse {
+      position: absolute;
+      inset: -6px; border-radius: 18px;
+      border: 2px solid var(--primary);
+      opacity: 0; pointer-events: none;
+    }
+    .pnode.active .pnode-pulse {
+      animation: nodePulseRing 1.4s ease-out infinite;
+    }
+    @keyframes nodePulseRing {
+      0%   { opacity: .8; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.18); }
+    }
+
+    /* Detail panel (right column) */
+    .pipeline-detail {
+      width: 360px;
+      flex-shrink: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      position: sticky;
+      top: 72px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      transition: border-color .4s;
+    }
+    @media (max-width: 900px) {
+      .pipeline-main { flex-direction: column; }
+      .pipeline-detail { width: 100%; position: static; max-height: none; }
+    }
+    .pd-content { font-size: .87rem; color: var(--text-muted); line-height: 1.65; }
+    .pd-content .pd-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: .94rem; font-weight: 700;
+      color: var(--primary); margin-bottom: .45rem;
+    }
+    .pd-content .pd-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .7rem; }
+    .pd-content .pd-tag {
+      background: var(--primary-glow); color: var(--primary);
+      border: 1px solid rgba(139,92,246,.2);
+      border-radius: 6px; padding: 2px 8px;
+      font-size: .7rem; font-weight: 600;
+    }
+
+    /* Controls */
+    .pipeline-controls {
+      display: flex; align-items: center; justify-content: center;
+      gap: .8rem; flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .pc-btn {
+      background: var(--card);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      border-radius: 8px; padding: .38rem .9rem;
+      font-size: .77rem; font-weight: 600;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: border-color .2s, color .2s;
+    }
+    .pc-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .pc-steps { display: flex; gap: .35rem; flex-wrap: wrap; }
+    .pc-step {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px; padding: .27rem .74rem;
+      font-size: .72rem; font-weight: 600;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .pc-step:hover { border-color: var(--border-light); color: var(--text); }
+    .pc-step.active {
+      border-color: var(--primary); color: var(--primary);
+      background: var(--primary-glow);
+    }
+
+    /* Agent node: left-aligned with header row */
+    .agent-node { text-align: left; width: 190px; padding: 1.25rem 1rem 1rem; }
+    .pnode-agent-hd { display: flex; align-items: center; gap: .5rem; margin-bottom: .35rem; }
+    .agent-robo { font-size: 1.55rem; line-height: 1; flex-shrink: 0; }
+
+    /* Prompt snippet inside agent node */
+    .pnode-qsnip {
+      font-size: .62rem; color: var(--text-dim);
+      font-style: italic; line-height: 1.4;
+      background: rgba(255,255,255,.025);
+      border: 1px solid var(--border);
+      border-radius: 5px; padding: .28rem .45rem;
+      margin-top: .35rem;
+    }
+
+    /* Loop / clinician tags inside agent node */
+    .pnode-loop-tag, .pnode-clinician-tag {
+      display: inline-flex; align-items: center; gap: .2rem;
+      font-size: .6rem; font-weight: 600;
+      border-radius: 5px; padding: 2px 7px;
+      margin-top: .38rem;
+    }
+    .pnode-loop-tag { background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.25); color: #fbbf24; }
+    .pnode-clinician-tag { background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.25); color: #34d399; }
+
+    /* Mini matrix inside input node */
+    .mini-matrix {
+      display: inline-block; margin-top: .4rem;
+      border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+      font-family: 'Outfit', monospace; font-size: .61rem;
+    }
+    .mm-row { display: flex; }
+    .mm-row span {
+      padding: 2px 5px; border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted); width: 30px; text-align: center;
+    }
+    .mm-row span:last-child { border-right: none; }
+    .mm-row:last-child span { border-bottom: none; }
+
+    /* Mini checklist inside candidate diseases node */
+    .mini-list { margin-top: .4rem; text-align: left; }
+    .ml-item { font-size: .65rem; color: #4ade80; padding: 1px 0; }
+    .ml-more { color: var(--text-dim) !important; font-style: italic; }
+
+    /* Chip tags inside input nodes */
+    .pnode-chips { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .45rem; justify-content: center; }
+    .pchip {
+      background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.2);
+      color: var(--primary); border-radius: 4px; padding: 1px 6px;
+      font-size: .62rem; font-weight: 600;
+    }
+
+    /* Detail panel rich content */
+    .pd-section { margin-bottom: .9rem; }
+    .pd-section:last-child { margin-bottom: 0; }
+    .pd-section-title {
+      font-size: .78rem; font-weight: 700; color: var(--text);
+      margin-bottom: .35rem; font-family: 'Outfit', sans-serif;
+    }
+    .pd-prompt-box {
+      background: rgba(139,92,246,.055); border: 1px solid rgba(139,92,246,.2);
+      border-left: 3px solid var(--primary); border-radius: 0 6px 6px 0;
+      padding: .45rem .7rem; font-size: .82rem; color: var(--text-muted);
+      font-style: italic; line-height: 1.55; margin-bottom: .35rem;
+    }
+    .pd-prompt-box .ph {
+      color: var(--primary); font-style: normal; font-weight: 600;
+      background: rgba(139,92,246,.12); border-radius: 3px; padding: 0 3px;
+    }
+    .pd-out-box {
+      background: rgba(52,211,153,.055); border: 1px solid rgba(52,211,153,.2);
+      border-left: 3px solid #34d399; border-radius: 0 6px 6px 0;
+      padding: .4rem .7rem; font-size: .8rem; color: var(--text-muted);
+      font-style: italic; margin-top: .25rem;
+    }
+    .pd-mem-row { display: flex; gap: .3rem; flex-wrap: wrap; margin-top: .4rem; }
+    .pd-mem-chip {
+      background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.2);
+      color: #fbbf24; border-radius: 5px; padding: 2px 8px;
+      font-size: .7rem; font-weight: 600;
+    }
+    .pd-clinician-row {
+      display: flex; align-items: flex-start; gap: .7rem;
+      background: rgba(52,211,153,.05); border: 1px solid rgba(52,211,153,.2);
+      border-radius: 8px; padding: .6rem .8rem; margin-top: .55rem;
+    }
+    .pd-clinician-ico { font-size: 1.35rem; line-height: 1; flex-shrink: 0; }
+    .pd-clinician-row strong { color: #34d399; font-size: .83rem; display: block; margin-bottom: .2rem; }
+    .pd-out-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: .7rem; margin-top: .5rem;
+    }
+    .pd-out-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: .65rem .85rem; }
+    .pd-out-ico { font-size: 1.15rem; margin-bottom: .25rem; }
+    .pd-out-title { font-size: .8rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; font-family: 'Outfit', sans-serif; }
+    .pd-out-text { font-size: .74rem; color: var(--text-muted); line-height: 1.4; }
+    .pd-in-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-top: .4rem; }
+    .pd-in-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: .65rem .85rem; }
+    .pd-in-title { font-size: .77rem; font-weight: 700; color: var(--text); margin-bottom: .3rem; font-family: 'Outfit', sans-serif; }
+    .pd-in-matrix { display: inline-block; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; font-family: 'Outfit', monospace; font-size: .64rem; margin-top: .2rem; }
+    .pd-in-matrix .mm-row span { width: 26px; }
+
+    /* Panel toggle buttons */
+    .pd-toggle-btn {
+      display: inline-flex; align-items: center; gap: .35rem;
+      margin-top: 1rem; padding: .38rem .95rem;
+      border-radius: 8px; font-size: .78rem; font-weight: 600;
+      cursor: pointer; font-family: 'DM Sans', sans-serif; border: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .pd-case-btn { background: var(--primary); color: #fff; }
+    .pd-case-btn:hover { opacity: .85; transform: translateY(-1px); }
+    .pd-back-btn { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); }
+    .pd-back-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    @media (max-width: 600px) {
+      .pnode { width: 95px; }
+      .agent-node { width: 115px; }
+      .pnode-label { font-size: .68rem; }
+      .pnode-sub { display: none; }
+      .pnode-qsnip, .pnode-loop-tag, .pnode-clinician-tag { display: none; }
+      .pipeline-row { gap: .6rem; }
+      .pd-in-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -290,124 +763,217 @@
     <li><a href="#results">Results</a></li>
     <li><a href="#next">What's Next</a></li>
     <li><a href="#authors">Authors</a></li>
-    <li><a href="https://github.com/hanxiaoxue114/IIKEA_HealthcareAgent" target="_blank">GitHub</a></li>
   </ul>
+  <a href="https://github.com/hanxiaoxue114/IIKEA_HealthcareAgent" target="_blank" class="nav-btn">⭐ GitHub</a>
 </nav>
 
 <!-- HERO -->
 <header class="hero">
-  <div style="position:absolute; top:1.2rem; left:1.5rem;">
-    <img src="emnlp_2025_logo_v1.png" alt="EMNLP 2025" style="height:42px; filter:brightness(0) invert(1); opacity:.85;" />
-  </div>
-  <div style="position:absolute; top:0.2rem; right:1.5rem;">
-    <img src="stevens.png" alt="Stevens Institute of Technology" style="height:120px; filter:brightness(0) invert(1); opacity:.85;" />
-  </div>
-  <h1>🩺 No Black Boxes:<br/><span>Interpretable &amp; Interactable</span><br/>Predictive Healthcare</h1>
-  <p>II-KEA is a <b style="color:#e8f5a0;"><u>K</u>nowledge-<u>E</u>nhanced <u>A</u>gentic</b> causal discovery framework that makes clinical AI both <b style="color:#e8f5a0;"><u>I</u>nterpretable &amp; <u>I</u>nteractable</b> — transparent and clinician-driven.</p>
+<div id="particles"></div>
+  <h1>🩺 No Black Boxes:<br/><span class="highlight">Knowledge-Enhanced Causal Agentic</span><br/>for Healthcare</h1>
+  <p>II-KEA is a <b><u>K</u>nowledge-<u>E</u>nhanced <u>A</u>gentic</b> causal discovery framework that makes clinical AI both <b><u>I</u>nterpretable &amp; <u>I</u>nteractable</b> — transparent and clinician-driven.</p>
   <div class="hero-buttons">
-    <a href="https://aclanthology.org/2025.findings-emnlp.1271.pdf" target="_blank" class="btn btn-white">📄 Read Paper</a>
-    <a href="https://github.com/hanxiaoxue114/IIKEA_HealthcareAgent" target="_blank" class="btn btn-outline">⭐ View Code</a>
+    <a href="https://aclanthology.org/2025.findings-emnlp.1271.pdf" target="_blank" class="btn btn-primary">📄 Read Paper</a>
+    <a href="https://github.com/hanxiaoxue114/IIKEA_HealthcareAgent" target="_blank" class="btn btn-ghost">⭐ View Code</a>
   </div>
 </header>
+
+<hr class="section-divider" />
 
 <!-- OVERVIEW -->
 <section id="overview">
   <div class="container">
-    <div class="section-label">The Problem</div>
-    <h2 class="section-title">Deep Learning in Healthcare is a Black Box</h2>
-    <p class="section-sub">Clinicians need to understand <em>why</em> a model makes a prediction — not just what it predicts. Current models fail on both counts.</p>
+    <div class="section-label reveal">The Problem</div>
+    <h2 class="section-title reveal reveal-delay-1">Deep Learning in Healthcare is a Black Box</h2>
+    <p class="section-sub reveal reveal-delay-2">Clinicians need to understand <em>why</em> a model makes a prediction — not just what it predicts. Current models fail on both counts.</p>
 
     <div class="compare">
-      <div class="compare-card bad">
-        <h3>Traditional Deep Learning</h3>
+      <div class="compare-card bad reveal reveal-delay-1">
+        <h3>✗ Traditional Deep Learning</h3>
         <ul>
           <li><span class="tag-bad">✗</span> Opaque reasoning — no explanations</li>
           <li><span class="tag-bad">✗</span> No clinician interactivity or customization</li>
           <li><span class="tag-bad">✗</span> Cannot incorporate domain expertise</li>
           <li><span class="tag-bad">✗</span> Undermines clinician trust and adoption</li>
         </ul>
-        <img src="traditional.png" alt="Traditional deep learning approach" class="compare-img" />
       </div>
-      <div class="compare-card good">
-        <h3>II-KEA (Our Approach)</h3>
+      <div class="compare-card good reveal reveal-delay-2">
+        <h3>✓ II-KEA (Our Approach)</h3>
         <ul>
           <li><span class="tag-good">✓</span> Explicit causal reasoning &amp; explanations</li>
           <li><span class="tag-good">✓</span> Clinicians can inject their own knowledge</li>
           <li><span class="tag-good">✓</span> Customizable goals and knowledge bases</li>
           <li><span class="tag-good">✓</span> Superior performance on real EHR datasets</li>
         </ul>
-        <img src="ours.png" alt="II-KEA approach" class="compare-img" />
       </div>
     </div>
   </div>
 </section>
+
+<hr class="section-divider" />
 
 <!-- HOW IT WORKS -->
-<section id="how">
+<section id="how" style="background: var(--bg2);">
   <div class="container">
-    <div class="section-label">Methodology</div>
-    <h2 class="section-title">How II-KEA Works</h2>
-    <p class="section-sub">Three LLM agents collaborate to go from a patient's diagnosis history to an interpretable, causally-grounded prediction.</p>
+    <div class="section-label reveal">Methodology</div>
+    <h2 class="section-title reveal reveal-delay-1">How II-KEA Works</h2>
+    <p class="section-sub reveal reveal-delay-2">Three LLM agents collaborate to go from a patient's diagnosis history to an interpretable, causally-grounded prediction.</p>
 
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h3>Patient Input</h3>
-        <p>A patient's diagnosis history is provided. Candidate diseases are shortlisted using a Disease Transition Probability Matrix built from EHR training data.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h3>Knowledge Retrieval</h3>
-        <p>The Knowledge Synthesis Agent queries a vector database of medical literature using RAG, summarizing only the information relevant to this patient's conditions.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3>Causal Discovery</h3>
-        <p>The Causal Discovery Agent builds a Directed Acyclic Graph (DAG) of disease relationships, iteratively refining it against real data fitting scores.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <h3>Diagnosis &amp; Explanation</h3>
-        <p>The Decision-Making Agent predicts future diagnoses with detailed explanations. Clinicians can interactively inject their own comments to guide the output.</p>
-      </div>
-    </div>
+    <!-- ── INTERACTIVE PIPELINE DIAGRAM ── -->
+    <div class="pipeline-wrap reveal">
+      <div class="pipeline-main">
+      <div class="pipeline-left">
 
-    <br/><br/>
-    <h3 style="margin-bottom:1.5rem; font-size:1.2rem;">The Three Agents</h3>
-    <div class="agents">
-      <div class="agent-card">
-        <div class="agent-icon icon-blue">📚</div>
-        <h3>Knowledge Synthesis Agent</h3>
-        <p>Retrieves and summarizes relevant medical documents from a knowledge vector database via RAG. Filters out noise to keep only patient-relevant insights.</p>
+      <!-- Controls -->
+      <div class="pipeline-controls">
+        <button class="pc-btn" id="pcPlay">⏸ Pause</button>
+        <div class="pc-steps">
+          <button class="pc-step active" data-goto="0">Patient</button>
+          <button class="pc-step" data-goto="1">Matrix</button>
+          <button class="pc-step" data-goto="2">Diseases</button>
+          <button class="pc-step" data-goto="3">Agent 1</button>
+          <button class="pc-step" data-goto="4">Agent 2</button>
+          <button class="pc-step" data-goto="5">Agent 3</button>
+          <button class="pc-step" data-goto="6">Diagnosis</button>
+          <button class="pc-step" data-goto="7">Explanation</button>
+          <button class="pc-step" data-goto="8">Graph</button>
+        </div>
       </div>
-      <div class="agent-card">
-        <div class="agent-icon icon-purple">🔗</div>
-        <h3>Causal Discovery Agent</h3>
-        <p>Constructs a causal DAG of disease relationships. Uses iterative hypothesis generation and data-grounded fitting to refine causal structure.</p>
-      </div>
-      <div class="agent-card">
-        <div class="agent-icon icon-green">🩺</div>
-        <h3>Decision-Making Agent</h3>
-        <p>Synthesizes the causal graph and knowledge summaries to predict ICD-9 diagnoses with detailed reasoning. Accepts optional clinician comments.</p>
-      </div>
-    </div>
 
-    <div class="fig-block">
-      <img src="EHR.png" alt="II-KEA system overview" />
-      <p class="fig-caption">Figure: II-KEA framework overview — multi-agent pipeline for interpretable and interactable EHR-based diagnosis prediction.</p>
+      <!-- SVG connectors -->
+      <svg class="pipeline-svg" id="pipelineSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+      <!-- Row 1: Inputs -->
+      <div class="pipeline-row-wrap">
+      <div class="pipeline-row-label">INPUT</div>
+      <div class="pipeline-row">
+
+        <div class="pnode input-node" data-step="0">
+          <div class="pnode-icon">🧑‍⚕️</div>
+          <div class="pnode-label">Patient History</div>
+          <div class="pnode-sub">EHR · Diagnosis Records</div>
+          <div class="pnode-chips"><span class="pchip">ICD-9</span><span class="pchip">Multi-visit</span></div>
+        </div>
+
+        <div class="pnode input-node" data-step="1">
+          <div class="pnode-icon">📊</div>
+          <div class="pnode-label">Transition Matrix</div>
+          <div class="pnode-sub">Disease Probabilities A<sup>T</sup></div>
+          <div class="mini-matrix">
+            <div class="mm-row"><span>0.3</span><span>0.4</span><span>0.0</span></div>
+            <div class="mm-row"><span>0.3</span><span>0.2</span><span>0.6</span></div>
+            <div class="mm-row"><span>0.5</span><span>0.4</span><span>0.1</span></div>
+          </div>
+        </div>
+
+        <div class="pnode input-node" data-step="2">
+          <div class="pnode-icon">🎯</div>
+          <div class="pnode-label">Candidate Diseases</div>
+          <div class="pnode-sub">Shortlisted by Matrix</div>
+          <div class="mini-list">
+            <div class="ml-item">✓ Hypertension</div>
+            <div class="ml-item">✓ Diabetes</div>
+            <div class="ml-more">+ more…</div>
+          </div>
+        </div>
+
+      </div>
+      </div><!-- /.pipeline-row-wrap -->
+
+      <!-- Row 2: Agents -->
+      <div class="pipeline-row pipeline-row-agents">
+
+        <div class="pnode agent-node" data-step="3" data-agent="knowledge">
+          <div class="pnode-badge">Agent 1</div>
+          <div class="pnode-agent-hd">
+            <span class="agent-robo">🤖</span>
+            <div>
+              <div class="pnode-label">Knowledge Synthesis</div>
+              <div class="pnode-sub">RAG · Vector DB</div>
+            </div>
+          </div>
+          <div class="pnode-qsnip">"Medical knowledge related to conditions associated with…"</div>
+          <div class="pnode-pulse"></div>
+        </div>
+
+        <div class="pnode agent-node" data-step="4" data-agent="causal">
+          <div class="pnode-badge">Agent 2</div>
+          <div class="pnode-agent-hd">
+            <span class="agent-robo">🤖</span>
+            <div>
+              <div class="pnode-label">Causal Discovery</div>
+              <div class="pnode-sub">DAG · Fitting Scores</div>
+            </div>
+          </div>
+          <div class="pnode-qsnip">"Produce a DAG to represent causality… Output in JSON form."</div>
+          <div class="pnode-loop-tag">🔄 Repeat w/ Fitting Scores</div>
+          <div class="pnode-pulse"></div>
+        </div>
+
+        <div class="pnode agent-node" data-step="5" data-agent="decision">
+          <div class="pnode-badge">Agent 3</div>
+          <div class="pnode-agent-hd">
+            <span class="agent-robo">🤖</span>
+            <div>
+              <div class="pnode-label">Decision Making</div>
+              <div class="pnode-sub">Prediction · Clinician</div>
+            </div>
+          </div>
+          <div class="pnode-qsnip">"…the set of diseases the patient may be diagnosed in the future."</div>
+          <div class="pnode-clinician-tag">👨‍⚕️ Clinician-in-Loop</div>
+          <div class="pnode-pulse"></div>
+        </div>
+
+      </div>
+
+      <!-- Row 3: Outputs -->
+      <div class="pipeline-row-wrap">
+      <div class="pipeline-row-label">OUTPUT</div>
+      <div class="pipeline-row">
+
+        <div class="pnode output-node" data-step="6">
+          <div class="pnode-icon">📋</div>
+          <div class="pnode-label">Diagnosis</div>
+          <div class="pnode-sub">Ranked ICD-9 Codes</div>
+        </div>
+
+        <div class="pnode output-node" data-step="7">
+          <div class="pnode-icon">💬</div>
+          <div class="pnode-label">Explanations</div>
+          <div class="pnode-sub">Reasoning Chain</div>
+        </div>
+
+        <div class="pnode output-node" data-step="8">
+          <div class="pnode-icon">🕸️</div>
+          <div class="pnode-label">Causal Graph</div>
+          <div class="pnode-sub">DAG.json</div>
+        </div>
+
+      </div>
+      </div><!-- /.pipeline-row-wrap -->
+
+      </div><!-- /.pipeline-left -->
+
+      <!-- Detail panel (right) -->
+      <div class="pipeline-detail" id="pipelineDetail">
+        <div class="pd-content" id="pdContent"></div>
+      </div>
+
+      </div><!-- /.pipeline-main -->
     </div>
   </div>
 </section>
+
+<hr class="section-divider" />
 
 <!-- RESULTS -->
 <section id="results">
   <div class="container">
-    <div class="section-label">Evaluation</div>
-    <h2 class="section-title">State-of-the-Art Performance</h2>
-    <p class="section-sub">II-KEA is evaluated on two real-world EHR benchmarks and achieves superior performance while providing interpretability that pure deep learning models cannot.</p>
+    <div class="section-label reveal">Evaluation</div>
+    <h2 class="section-title reveal reveal-delay-1">State-of-the-Art Performance</h2>
+    <p class="section-sub reveal reveal-delay-2">II-KEA is evaluated on two real-world EHR benchmarks and achieves superior performance while providing interpretability that pure deep learning models cannot.</p>
 
-    <div class="results-tables">
-      <!-- MIMIC-III -->
+    <div class="results-tables reveal reveal-delay-1">
       <div class="results-table-block">
         <div class="tbl-header">MIMIC-III</div>
         <table class="rtable">
@@ -423,9 +989,8 @@
           </tbody>
         </table>
       </div>
-      <!-- MIMIC-IV -->
       <div class="results-table-block">
-        <div class="tbl-header green">MIMIC-IV</div>
+        <div class="tbl-header purple">MIMIC-IV</div>
         <table class="rtable">
           <thead><tr><th>Model</th><th>w-F1</th><th>R@10</th><th>R@20</th></tr></thead>
           <tbody>
@@ -440,14 +1005,9 @@
         </table>
       </div>
     </div>
-    <p style="font-size:.82rem; color:var(--muted); margin-bottom:2rem;">Results reported as average (%) over 5 runs. w-F1 = weighted F1; R@k = Recall@k. Bold = best, gray = second best.</p>
+    <p style="font-size:.78rem; color:var(--text-dim); margin-bottom:2.5rem;">Results reported as average (%) over 5 runs. w-F1 = weighted F1; R@k = Recall@k.</p>
 
-    <div class="fig-block" style="margin-top:0; margin-bottom:2.5rem;">
-      <img src="case_study.png" alt="Case study results" />
-      <p class="fig-caption">Figure: Case study — II-KEA's causal graph and prediction explanations for a real patient from MIMIC.</p>
-    </div>
-
-    <div class="features">
+<div class="features">
       <div class="feature">
         <span class="feature-icon">🧠</span>
         <div>
@@ -480,12 +1040,14 @@
   </div>
 </section>
 
+<hr class="section-divider" />
+
 <!-- WHAT'S NEXT -->
-<section id="next">
+<section id="next" style="background: var(--bg2);">
   <div class="container">
-    <div class="section-label">Future Work</div>
-    <h2 class="section-title">What's Next</h2>
-    <p class="section-sub">II-KEA opens a promising paradigm for interpretable and interactive clinical AI. Here's where we're headed.</p>
+    <div class="section-label reveal">Future Work</div>
+    <h2 class="section-title reveal reveal-delay-1">What's Next</h2>
+    <p class="section-sub reveal reveal-delay-2">II-KEA opens a promising paradigm for interpretable and interactive clinical AI. Here's where we're headed.</p>
     <div class="agents">
       <div class="agent-card">
         <div class="agent-icon icon-blue">📚</div>
@@ -493,26 +1055,28 @@
         <p>The current system uses Wikipedia as a proof-of-concept knowledge base. Future work will integrate more specialized medical knowledge sources to improve fine-grained diagnosis prediction.</p>
       </div>
       <div class="agent-card">
-        <div class="agent-icon icon-purple">🩻</div>
+        <div class="agent-icon icon-green">🩻</div>
         <h3>Broader Clinical Tasks</h3>
         <p>Beyond diagnosis prediction, we plan to extend II-KEA to support treatment planning, medication recommendation, and other clinician-facing tasks.</p>
       </div>
       <div class="agent-card">
-        <div class="agent-icon icon-green">👥</div>
+        <div class="agent-icon icon-purple">👥</div>
         <h3>Multi-Stakeholder Collaboration</h3>
-        <p>Current interactions are limited to individual clinicians. Future iterations will enable collaborative decision-making across multiple stakeholders for more holistic, patient-centered care.</p>
+        <p>Current interactions are limited to individual clinicians. Future iterations will enable collaborative decision-making involving multiple stakeholders for holistic, patient-centered care.</p>
       </div>
     </div>
   </div>
 </section>
 
+<hr class="section-divider" />
+
 <!-- AUTHORS -->
 <section id="authors">
   <div class="container">
-    <div class="section-label">Team</div>
-    <h2 class="section-title">Authors</h2>
+    <div class="section-label reveal">Team</div>
+    <h2 class="section-title reveal reveal-delay-1">Authors</h2>
     <div class="authors-grid">
-      <a href="https://hanxiaoxue114.github.io/" target="_blank" class="author-card">
+      <a href="https://hanxiaoxue114.github.io/" target="_blank" class="author-card reveal reveal-delay-1">
         <img class="author-photo" src="https://hanxiaoxue114.github.io/images/sandy1.jpg" alt="Xiaoxue Han" />
         <h4>Xiaoxue Han</h4>
         <p>PhD student at Stevens. Research on trustworthy GNNs, healthcare prediction, and continual learning.</p>
@@ -540,7 +1104,7 @@
       <a href="https://yue-ning.github.io/" target="_blank" class="author-card">
         <img class="author-photo" src="https://yue-ning.github.io/img/YueNing-square.jpg" alt="Yue Ning" />
         <h4>Yue Ning</h4>
-        <p>Associate Professor at Stevens. Research on machine learning, data analytics in healthcare and social informatics.</p>
+        <p>Associate Professor at Stevens. Research on machine learning and data analytics in healthcare.</p>
       </a>
     </div>
     <p class="affiliation">Stevens Institute of Technology &nbsp;·&nbsp; Department of Computer Science</p>
@@ -552,14 +1116,382 @@
   <h2>Explore the Code &amp; Paper</h2>
   <p>II-KEA is open source. Dive into the implementation, datasets, and experiments.</p>
   <div class="hero-buttons">
-    <a href="https://aclanthology.org/2025.findings-emnlp.1271.pdf" target="_blank" class="btn btn-white">📄 EMNLP Paper</a>
-    <a href="https://github.com/hanxiaoxue114/IIKEA_HealthcareAgent" target="_blank" class="btn btn-outline">⭐ GitHub Repo</a>
+    <a href="https://aclanthology.org/2025.findings-emnlp.1271.pdf" target="_blank" class="btn btn-primary">📄 EMNLP Paper</a>
+    <a href="https://github.com/hanxiaoxue114/IIKEA_HealthcareAgent" target="_blank" class="btn btn-ghost">⭐ GitHub Repo</a>
   </div>
 </div>
 
+<script>
+  /* ── Staggered scroll reveal ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      // Stagger siblings inside the same parent container
+      const siblings = Array.from(el.parentElement.querySelectorAll(':scope > .reveal'));
+      const idx = siblings.indexOf(el);
+      el.style.transitionDelay = (idx * 0.08) + 's';
+      el.classList.add('visible');
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      el.style.transition = 'none';
+      el.classList.add('visible');
+    } else {
+      observer.observe(el);
+    }
+  });
+
+  /* ── Floating particles ── */
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random() * 100}%;
+      bottom:${Math.random() * 40}%;
+      animation-duration:${Math.random() * 5 + 5}s;
+      animation-delay:${Math.random() * 6}s;
+      filter: blur(${Math.random() > .5 ? 1 : 0}px);
+      opacity:0;
+    `;
+    container.appendChild(p);
+  }
+</script>
+
+<script>
+/* ── Interactive Pipeline Diagram ── */
+(function () {
+  const svg = document.getElementById('pipelineSvg');
+  if (!svg) return;
+
+  const wrap       = document.querySelector('.pipeline-left');
+  const detailEl   = document.getElementById('pipelineDetail');
+  const pdContent  = document.getElementById('pdContent');
+  const pcPlay     = document.getElementById('pcPlay');
+  const pcStepBtns = document.querySelectorAll('.pc-step');
+
+  const inputNodes  = Array.from(document.querySelectorAll('.input-node'));
+  const agentNodes  = [
+    document.querySelector('[data-agent="knowledge"]'),
+    document.querySelector('[data-agent="causal"]'),
+    document.querySelector('[data-agent="decision"]'),
+  ];
+  const outputNodes = Array.from(document.querySelectorAll('.output-node'));
+  const allNodes    = [...inputNodes, ...agentNodes, ...outputNodes];
+
+  const stepData = [
+    // Step 0 — Patient History
+    {
+      info: `<div class="pd-title">🧑‍⚕️ Patient History</div>
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.65">The patient's past diagnoses across multiple hospital visits, encoded as ICD-9 codes. This longitudinal record is the core input — the model must answer: <em>"What disease will this patient be diagnosed with next?"</em></p>
+        <div class="pd-tags" style="margin-top:.7rem"><span class="pd-tag">ICD-9 Codes</span><span class="pd-tag">Multi-visit EHR</span><span class="pd-tag">Longitudinal</span></div>`,
+      case: `<div class="pd-title">🧑‍⚕️ Case — Patient Diagnoses</div>
+        <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6">Thrombocytopenia · Iatrogenic pneumothorax · Pneumonia · Lung involvement in other diseases · <strong style="color:var(--text)">Acute kidney failure</strong> · Coronary atherosclerosis of native coronary artery · <strong style="color:var(--text)">Congestive heart failure</strong> · Post-hemorrhagic anemia · <strong style="color:var(--text)">Atrial fibrillation</strong> · Abdominal aneurysm without mention of rupture…</p>`,
+    },
+    // Step 1 — Transition Matrix
+    {
+      info: `<div class="pd-title">📊 Disease Transition Matrix</div>
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.65">Captures P(disease&nbsp;j&nbsp;|&nbsp;disease&nbsp;i) — the probability that disease j occurs after disease i — computed from population-level EHR training data. Temporal precedence is a necessary (but not sufficient) condition for causality.</p>
+        <div class="pd-in-matrix" style="margin:.7rem auto;display:table"><div class="mm-row"><span>0.3</span><span>0.4</span><span>0.0</span></div><div class="mm-row"><span>0.3</span><span>0.2</span><span>0.6</span></div><div class="mm-row"><span>0.5</span><span>0.4</span><span>0.1</span></div></div>`,
+      case: `<div class="pd-title">📊 Case — Transition Matrix</div>
+        <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:.5rem">Sample transition probabilities for this patient's conditions. High-probability successors become candidate diseases.</p>
+        <div class="pd-in-matrix" style="margin:.4rem 0;display:inline-block"><div class="mm-row"><span>0.3</span><span>0.4</span><span>0.0</span></div><div class="mm-row"><span>0.3</span><span>0.2</span><span>0.6</span></div><div class="mm-row"><span>0.5</span><span>0.4</span><span>0.1</span></div></div>
+        <p style="font-size:.75rem;color:var(--text-dim);margin-top:.4rem">P(disease j | disease i) from training EHR data</p>`,
+    },
+    // Step 2 — Candidate Diseases
+    {
+      info: `<div class="pd-title">🎯 Candidate Diseases</div>
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.65">Top-k diseases most likely to follow the patient's existing conditions, shortlisted from the transition matrix. This focused pool reduces LLM reasoning load and guides both the knowledge retrieval and causal discovery agents.</p>
+        <div class="pd-tags" style="margin-top:.7rem"><span class="pd-tag">Top-k Selection</span><span class="pd-tag">Reduces LLM Load</span><span class="pd-tag">Causal Candidates</span></div>`,
+      case: `<div class="pd-title">🎯 Case — Shortlisted Candidates</div>
+        <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:.5rem">Diseases shortlisted for this patient based on the transition matrix:</p>
+        <div class="pd-tags"><span class="pd-tag">Pulm. hypertension</span><span class="pd-tag">Severe sepsis</span><span class="pd-tag">Acute resp. failure</span><span class="pd-tag">Hyperlipidemia</span><span class="pd-tag">Old myocardial infarction</span><span class="pd-tag">PTCA status</span><span class="pd-tag">Diabetes mellitus</span><span class="pd-tag">Sarcoidosis</span></div>`,
+    },
+    // Step 3 — Knowledge Synthesis Agent
+    {
+      info: `<div class="pd-title">🤖 Agent 1 — Knowledge Synthesis</div>
+        <div class="pd-section"><div class="pd-section-title">🔍 Knowledge Retrieval</div>
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.6">Queries a vector database of medical literature. Returns top-k relevant documents per candidate disease.</p></div>
+        <div class="pd-section"><div class="pd-section-title">📝 Reason-in-Documents</div>
+        <div class="pd-prompt-box">"Remove redundant information from the <span class="ph">{i-th retrieved document}</span> that is irrelevant to the patient's <span class="ph">{diagnosis history}</span> and <span class="ph">{candidate diseases}</span>. Generate a concise summary."</div></div>
+        <div class="pd-tags"><span class="pd-tag">RAG</span><span class="pd-tag">Vector DB</span><span class="pd-tag">Domain Knowledge</span></div>`,
+      case: `<div class="pd-title">🤖 Case — Knowledge Synthesis</div>
+        <div class="pd-section"><div class="pd-section-title">🔍 Search Query</div>
+        <div class="pd-prompt-box" style="font-style:normal;font-size:.78rem">"Retrieve disease summaries and ICD-9 classifications for conditions related to nausea, anemia, fever, asthma, and pulmonary embolism. Emphasize connections to acute respiratory failure, kidney failure, pneumonia, hyperlipidemia, and anticoagulant therapy."</div></div>
+        <div class="pd-section"><div class="pd-section-title">📝 Retrieved Summary</div>
+        <div class="pd-out-box"><em>"Pulmonary hypertension (PH) is classified into five groups (WHO): Group I from left heart disease; Group III from lung diseases (COPD); Group IV from arterial obstruction (CTEPHs); Group V from unclear mechanisms."</em></div></div>`,
+    },
+    // Step 4 — Causal Discovery Agent
+    {
+      info: `<div class="pd-title">🤖 Agent 2 — Causal Discovery</div>
+        <div class="pd-section"><div class="pd-section-title">🔗 DAG Construction</div>
+        <div class="pd-prompt-box">"Produce a DAG to represent the causality between the set of disease names. A summary of the patient and all disease is provided as <span class="ph">{summaries}</span>. Output in JSON form."</div></div>
+        <div class="pd-section"><div class="pd-section-title">🔄 Iterative Refinement</div>
+        <div class="pd-prompt-box">"Are there links you'd like to add? Any you think should be removed? Any directions should be reversed? Output a new valid JSON."</div>
+        <div class="pd-mem-row"><span class="pd-mem-chip">Previous DAG</span><span class="pd-mem-chip">Current DAG</span><span class="pd-mem-chip">Fitting Scores</span></div></div>`,
+      case: `<div class="pd-title">🤖 Case — Causal Discovery</div>
+        <div class="pd-section"><div class="pd-section-title">🕸️ Key Causal Links Discovered</div>
+        <div class="pd-tags"><span class="pd-tag">AF → Ischemic Stroke</span><span class="pd-tag">CKD → ESRD</span><span class="pd-tag">Coronary atherosclerosis → MI</span><span class="pd-tag">Hypertension → ESRD</span><span class="pd-tag">Diabetes → Nephropathy</span><span class="pd-tag">Amyloidosis → Nephrotic Syndrome</span></div></div>
+        <div class="pd-out-box">Output: <strong style="color:var(--text);font-style:normal">DAG.json</strong> — validated against patient diagnosis data via fitting scores</div>`,
+    },
+    // Step 5 — Decision Making Agent
+    {
+      info: `<div class="pd-title">🤖 Agent 3 — Decision Making</div>
+        <div class="pd-section"><div class="pd-section-title">🩺 Prompt</div>
+        <div class="pd-prompt-box">"A summary of the patient and all disease is provided as <span class="ph">{summary}</span>, a DAG is given as <span class="ph">{DAG.json}</span>. Optional <span class="ph">{Clinician comment}</span>, predict the set of diseases the patient may be diagnosed in the future."</div></div>
+        <div class="pd-clinician-row"><div class="pd-clinician-ico">👨‍⚕️</div><div><strong>Clinician-in-the-Loop (Optional)</strong><p style="font-size:.78rem;color:var(--text-muted);line-height:1.5;margin-top:.2rem">Clinicians can inject domain knowledge or personal focus areas via free-text comment, steering predictions without retraining.</p></div></div>`,
+      case: `<div class="pd-title">🤖 Case — Decision Making</div>
+        <div class="pd-section"><div class="pd-section-title">Without clinician comment</div>
+        <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55"><strong style="color:var(--text)">1. ESRD — 58%</strong> · Uncontrolled hypertension + CKD + acute kidney failure<br/><strong style="color:var(--text)">2. Recurrent MI — 49.1%</strong> · Coronary atherosclerosis + prior MI<br/><strong style="color:var(--text)">3. Ischemic Stroke (436.91)</strong> · AF + hypertension + coronary disease</p></div>
+        <div class="pd-clinician-row" style="margin:.5rem 0"><div class="pd-clinician-ico" style="font-size:1.1rem">👨‍⚕️</div><div><em style="font-size:.75rem;color:var(--text-muted)">"I'm particularly concerned about kidney-related diseases."</em></div></div>
+        <div class="pd-section"><div class="pd-section-title">With clinician comment</div>
+        <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55"><strong style="color:var(--text)">1. ESRD — 58%</strong> · CKD stage V + hypertension<br/><strong style="color:var(--text)">2. Nephrotic Syndrome (581.9)</strong> · Amyloidosis → protein leakage<br/><strong style="color:var(--text)">3. Diabetic Nephropathy (250.4x)</strong> · Microvascular damage → proteinuria</p></div>`,
+    },
+    // Step 6 — Diagnosis output
+    {
+      info: `<div class="pd-title">📋 Output — Diagnosis Prediction</div>
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.65">Ranked ICD-9 diagnosis codes for the patient's next visit, each grounded in causal reasoning over the patient's prior conditions. Unlike black-box models, every prediction traces back to an interpretable causal chain.</p>
+        <div class="pd-tags" style="margin-top:.7rem"><span class="pd-tag">Ranked ICD-9</span><span class="pd-tag">Causal Grounding</span><span class="pd-tag">Interpretable</span></div>`,
+      case: `<div class="pd-title">📋 Case — Diagnosis Prediction</div>
+        <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6"><strong style="color:var(--primary)">1. End-Stage Renal Disease (ESRD) — 58%</strong><br/>CKD stage V + uncontrolled hypertension + acute kidney failure history → high-risk ESRD progression requiring dialysis or transplant.<br/><br/><strong style="color:var(--text)">2. Recurrent Myocardial Infarction — 49.1%</strong><br/>History of coronary atherosclerosis and prior MI → high probability of another cardiac event.<br/><br/><strong style="color:var(--text)">3. Ischemic Stroke (ICD 436.91)</strong><br/>Atrial fibrillation + hypertension + coronary disease → elevated stroke risk via embolism.</p>`,
+    },
+    // Step 7 — Explanations output
+    {
+      info: `<div class="pd-title">💬 Output — Explanations</div>
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.65">Natural-language reasoning chains explaining <em>why</em> each disease was predicted. Every prediction is linked to specific prior conditions and causal pathways — no black boxes, full clinician transparency.</p>
+        <div class="pd-tags" style="margin-top:.7rem"><span class="pd-tag">Natural Language</span><span class="pd-tag">Causal Chains</span><span class="pd-tag">No Black Boxes</span></div>`,
+      case: `<div class="pd-title">💬 Case — Explanations</div>
+        <div class="pd-out-box" style="margin-bottom:.6rem"><em>"The patient already has chronic kidney disease stage V and a history of hypertension… Continuous progression to ESRD, requiring dialysis or kidney transplantation, is highly probable."</em></div>
+        <div class="pd-out-box" style="margin-bottom:.6rem"><em>"The presence of amyloidosis increases the likelihood of protein leakage in urine, leading to nephrotic syndrome, which worsens kidney function."</em></div>
+        <div class="pd-out-box"><em>"Given the history of diabetes mellitus, the kidneys are likely to suffer further damage from diabetes-related microvascular complications, leading to proteinuria and worsening renal function."</em></div>`,
+    },
+    // Step 8 — Causal Graph output
+    {
+      info: `<div class="pd-title">🕸️ Output — Causal Graph</div>
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.65">A Directed Acyclic Graph (DAG) over diseases, encoded as DAG.json. Shows which prior conditions causally drive future diagnoses. Provides an intuitive, comprehensive representation of disease mechanisms that clinicians can review and validate.</p>
+        <div class="pd-tags" style="margin-top:.7rem"><span class="pd-tag">DAG.json</span><span class="pd-tag">Causal Structure</span><span class="pd-tag">Clinician Review</span></div>`,
+      case: `<div class="pd-title">🕸️ Case — Causal Graph</div>
+        <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:.5rem">Key edges in the discovered DAG for this patient:</p>
+        <div class="pd-tags"><span class="pd-tag">AF → Ischemic Stroke</span><span class="pd-tag">CKD → ESRD</span><span class="pd-tag">Hypertension → ESRD</span><span class="pd-tag">Coronary atherosclerosis → MI</span><span class="pd-tag">Diabetes → Diabetic Nephropathy</span><span class="pd-tag">Amyloidosis → Nephrotic Syndrome</span></div>
+        <div class="pd-out-box" style="margin-top:.6rem">Output: <strong style="color:var(--text);font-style:normal">DAG.json</strong> — full causal graph available for clinical review and audit</div>`,
+    },
+  ];
+
+  // Connections: from → to, activated at step, type 'v'=vertical / 'h'=horizontal
+  const connDefs = [
+    { from: inputNodes[0], to: agentNodes[0], step: 3, type: 'v' },
+    { from: inputNodes[1], to: agentNodes[0], step: 3, type: 'v' },
+    { from: inputNodes[2], to: agentNodes[0], step: 3, type: 'v' },
+    { from: agentNodes[0], to: agentNodes[1], step: 4, type: 'h' },
+    { from: agentNodes[1], to: agentNodes[2], step: 5, type: 'h' },
+    { from: agentNodes[2], to: outputNodes[0], step: 6, type: 'v' },
+    { from: agentNodes[2], to: outputNodes[1], step: 7, type: 'v' },
+    { from: agentNodes[2], to: outputNodes[2], step: 8, type: 'v' },
+  ];
+
+  let currentStep = 0;
+  let pdMode      = 'info'; // 'info' | 'case'
+  let playing     = true;
+  let playTimer   = null;
+  const STEP_MS   = 5000;
+  let drawn       = [];
+
+  function edges(el) {
+    const wr = wrap.getBoundingClientRect();
+    const r  = el.getBoundingClientRect();
+    return {
+      cx: r.left - wr.left + r.width  / 2,
+      cy: r.top  - wr.top  + r.height / 2,
+      top:    r.top    - wr.top,
+      bottom: r.top    - wr.top  + r.height,
+      left:   r.left   - wr.left,
+      right:  r.left   - wr.left + r.width,
+    };
+  }
+
+  function buildD(conn) {
+    const f = edges(conn.from);
+    const t = edges(conn.to);
+    if (conn.type === 'v') {
+      const my = (f.bottom + t.top) / 2;
+      return `M${f.cx},${f.bottom} C${f.cx},${my} ${t.cx},${my} ${t.cx},${t.top}`;
+    } else {
+      const mx = (f.right + t.left) / 2;
+      return `M${f.right},${f.cy} C${mx},${f.cy} ${mx},${t.cy} ${t.left},${t.cy}`;
+    }
+  }
+
+  function nsEl(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
+
+  function drawPaths() {
+    svg.innerHTML = '';
+    drawn = [];
+
+    const defs = nsEl('defs');
+    defs.innerHTML = `
+      <marker id="mDim"    viewBox="0 0 8 8" markerWidth="6" markerHeight="6" refX="7" refY="3" orient="auto">
+        <path d="M0,0.5 L0,5.5 L7,3z" fill="rgba(139,92,246,0.22)"/>
+      </marker>
+      <marker id="mBright" viewBox="0 0 8 8" markerWidth="6" markerHeight="6" refX="7" refY="3" orient="auto">
+        <path d="M0,0.5 L0,5.5 L7,3z" fill="rgba(139,92,246,0.9)"/>
+      </marker>`;
+    svg.appendChild(defs);
+
+    connDefs.forEach(conn => {
+      const d = buildD(conn);
+
+      // Dim dashed base
+      const base = nsEl('path');
+      base.setAttribute('d', d);
+      base.setAttribute('fill', 'none');
+      base.setAttribute('stroke', 'rgba(139,92,246,0.13)');
+      base.setAttribute('stroke-width', '1.5');
+      base.setAttribute('stroke-dasharray', '5 4');
+      base.setAttribute('marker-end', 'url(#mDim)');
+      svg.appendChild(base);
+
+      // Glow (blurred wide stroke)
+      const glow = nsEl('path');
+      glow.setAttribute('d', d);
+      glow.setAttribute('fill', 'none');
+      glow.setAttribute('stroke', 'rgba(139,92,246,0.22)');
+      glow.setAttribute('stroke-width', '7');
+      glow.setAttribute('stroke-linecap', 'round');
+      glow.style.cssText = 'opacity:0;transition:opacity .5s;filter:blur(3px)';
+      svg.appendChild(glow);
+
+      // Active path
+      const active = nsEl('path');
+      active.setAttribute('d', d);
+      active.setAttribute('fill', 'none');
+      active.setAttribute('stroke', 'rgba(139,92,246,0.75)');
+      active.setAttribute('stroke-width', '2');
+      active.setAttribute('marker-end', 'url(#mBright)');
+      active.style.cssText = 'opacity:0;transition:opacity .5s';
+      svg.appendChild(active);
+
+      // Flow dot
+      const dot = nsEl('circle');
+      dot.setAttribute('r', '4');
+      dot.setAttribute('fill', 'rgba(139,92,246,1)');
+      dot.style.opacity = '0';
+      svg.appendChild(dot);
+
+      drawn.push({ conn, d, glow, active, dot });
+    });
+  }
+
+  function animateDot(dc) {
+    const { dot, active } = dc;
+    const len = active.getTotalLength();
+    if (!len) return;
+    dot.style.opacity = '1';
+    const start = performance.now(), dur = 680;
+    (function frame(now) {
+      const t    = Math.min((now - start) / dur, 1);
+      const ease = t < .5 ? 2*t*t : -1+(4-2*t)*t;
+      const pt   = active.getPointAtLength(ease * len);
+      dot.setAttribute('cx', pt.x);
+      dot.setAttribute('cy', pt.y);
+      if (t < 1) requestAnimationFrame(frame);
+      else dot.style.opacity = '0';
+    })(performance.now());
+  }
+
+  function renderPanel(step, mode) {
+    const sd = stepData[step];
+    const isCase = mode === 'case';
+    pdContent.innerHTML = (isCase ? sd.case : sd.info) +
+      (isCase
+        ? `<button class="pd-toggle-btn pd-back-btn" id="pdToggle">← Return</button>`
+        : `<button class="pd-toggle-btn pd-case-btn" id="pdToggle">🔬 Show Case Study</button>`);
+    document.getElementById('pdToggle').addEventListener('click', () => {
+      pdMode = isCase ? 'info' : 'case';
+      renderPanel(step, pdMode);
+      detailEl.style.borderColor = (step >= 3 && step <= 5) ? 'rgba(139,92,246,.35)' : '';
+    });
+  }
+
+  function setStep(step) {
+    currentStep = step;
+
+    // Node appearance
+    allNodes.forEach(n => {
+      const ns = parseInt(n.dataset.step);
+      n.classList.remove('active', 'visited', 'dim');
+      if (ns === step)      n.classList.add('active');
+      else if (ns < step)   n.classList.add('visited');
+      else                  n.classList.add('dim');
+    });
+
+    // Connections
+    drawn.forEach(dc => {
+      const show = dc.conn.step <= step;
+      dc.active.style.opacity = show ? '1' : '0';
+      dc.glow.style.opacity   = show ? '1' : '0';
+      if (dc.conn.step === step) setTimeout(() => animateDot(dc), 180);
+    });
+
+    // Detail panel — reset to info view on step change
+    pdMode = 'info';
+    renderPanel(step, 'info');
+    detailEl.style.borderColor = (step >= 3 && step <= 5) ? 'rgba(139,92,246,.35)' : '';
+
+    // Step buttons
+    pcStepBtns.forEach(b => b.classList.toggle('active', parseInt(b.dataset.goto) === step));
+  }
+
+  function scheduleNext() {
+    clearTimeout(playTimer);
+    if (!playing) return;
+    if (currentStep >= 8) { playing = false; pcPlay.textContent = '▶ Play'; return; }
+    playTimer = setTimeout(() => { setStep(currentStep + 1); scheduleNext(); }, STEP_MS);
+  }
+
+  function init() { drawPaths(); setStep(0); scheduleNext(); }
+
+  // Controls
+  pcPlay.addEventListener('click', () => {
+    if (playing) {
+      playing = false;
+      pcPlay.textContent = '▶ Play';
+      clearTimeout(playTimer);
+    } else {
+      playing = true;
+      pcPlay.textContent = '⏸ Pause';
+      setStep(0);
+      scheduleNext();
+    }
+  });
+
+  pcStepBtns.forEach(b => b.addEventListener('click', () => {
+    playing = false; pcPlay.textContent = '▶ Play'; clearTimeout(playTimer);
+    setStep(parseInt(b.dataset.goto));
+  }));
+
+  allNodes.forEach(n => n.addEventListener('click', () => {
+    playing = false; pcPlay.textContent = '▶ Play'; clearTimeout(playTimer);
+    setStep(parseInt(n.dataset.step));
+  }));
+
+  let rsz;
+  window.addEventListener('resize', () => { clearTimeout(rsz); rsz = setTimeout(() => { drawPaths(); setStep(currentStep); }, 150); });
+
+  if (document.readyState === 'complete') setTimeout(init, 150);
+  else window.addEventListener('load', () => setTimeout(init, 150));
+})();
+</script>
+
 <!-- FOOTER -->
 <footer>
-  <p>II-KEA · EMNLP 2025 &nbsp;·&nbsp; Stevens Institute of Technology</p>
+  <p>II-KEA &nbsp;·&nbsp; EMNLP 2025 &nbsp;·&nbsp; Stevens Institute of Technology</p>
 </footer>
 
 </body>
